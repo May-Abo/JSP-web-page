@@ -5,13 +5,11 @@
  */
 package com.may.view;
 
-import com.may.entity.Account;
 import com.may.logic.AccountLogic;
 import com.may.util.ConstantStrings;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,15 +41,14 @@ public class LogInView extends HttpServlet {
 
         if (errorMessages.isEmpty()) {
             AccountLogic al = new AccountLogic();
-            Optional<Account> userAccount = Optional.ofNullable(al.getAcountWith(userName, password));
-            boolean validLogin = userAccount.isPresent();
+            boolean validLogin = al.getAcountWith(userName, password);
             if (!validLogin) {
                 errorMessages.put(ConstantStrings.LOGIN, ConstantStrings.INVALID_LOGIN_ERROR);
             }
         }
 
         if (errorMessages.isEmpty()) {
-            response.sendRedirect("SignUpView");
+            response.sendRedirect("account.jsp");
         } else {
             request.setAttribute("errorMessages", errorMessages);
             request.getRequestDispatcher("index.jsp").include(request, response);

@@ -79,4 +79,15 @@ public class AccountDAO extends GenericDAO<Account>{
         return findResult("Account.validateUser", map);
     }
     
+    /**
+     * get the rows (list of {@link Account}) with the given password from Account table
+     * @param password - search for this password in Account table
+     * @return list of {@link Account} with the selected password
+     */
+    public List<Account> findByPassword(String password) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("password", password);
+        return findResults("Account.findByPassword", map);
+    }
+    
 }

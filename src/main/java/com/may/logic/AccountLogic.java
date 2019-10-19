@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 /**
  *
@@ -56,7 +57,7 @@ public class AccountLogic extends GenericLogic<Account, AccountDAO> {
 
     /**
      * create a new Account object and set the values using Class setters
-     *
+     * 
      * @see GenericLogic#createEntity(java.util.Map)
      * @param parameterMap - {@link Map}
      * @return {@link Account}
@@ -70,21 +71,20 @@ public class AccountLogic extends GenericLogic<Account, AccountDAO> {
         if (parameterMap.containsKey(ConstantStrings.ID)) {
             account.setId(Integer.parseInt(parameterMap.get(ConstantStrings.ID)[0]));
         }
+        
         validateString(parameterMap, ConstantStrings.USER_NAME);
-        account.setUserName(parameterMap.get(ConstantStrings.USER_NAME)[0]);
-
         validateString(parameterMap, ConstantStrings.EMAIL);
-        account.setEmail(parameterMap.get(ConstantStrings.EMAIL)[0]);
-
         validateString(parameterMap, ConstantStrings.FIRST_NAME);
-        account.setFirstName(parameterMap.get(ConstantStrings.FIRST_NAME)[0]);
-
         validateString(parameterMap, ConstantStrings.LAST_NAME);
-        account.setLastName(parameterMap.get(ConstantStrings.LAST_NAME)[0]);
-
         validateString(parameterMap, ConstantStrings.PASSWORD);
-        account.setPassword(parameterMap.get(ConstantStrings.PASSWORD)[0]);
-
+        
+        
+        account.setUserName(parameterMap.get(ConstantStrings.USER_NAME)[0]);
+        account.setEmail(parameterMap.get(ConstantStrings.EMAIL)[0]);
+        account.setFirstName(parameterMap.get(ConstantStrings.FIRST_NAME)[0]);
+        account.setLastName(parameterMap.get(ConstantStrings.LAST_NAME)[0]);
+        account.setPassword(bcryptHashing(parameterMap.get(ConstantStrings.PASSWORD)[0]));
+       
         if (parameterMap.containsKey(ConstantStrings.PHONE_NUMBER)) {
             account.setPhoneNumber(parameterMap.get(ConstantStrings.PHONE_NUMBER)[0]);
         }
@@ -94,6 +94,18 @@ public class AccountLogic extends GenericLogic<Account, AccountDAO> {
         return account;
     }
 
+    /**
+     * 
+     * @see BCrypt#hashpw(java.lang.String, java.lang.String) 
+     * @param originalString - a string to be hased
+     * @return hashed string
+     */
+    private String bcryptHashing(String originalString){
+        //String generatedSecuredEmailHash = BCrypt.hashpw(originalString, BCrypt.gensalt(12))
+        //boolean matchedEmail = BCrypt.checkpw(originalString, generatedSecuredEmailHash);
+        return BCrypt.hashpw(originalString, BCrypt.gensalt(12));
+        
+    }
     /**
      * this method is not implemented
      *
@@ -106,16 +118,22 @@ public class AccountLogic extends GenericLogic<Account, AccountDAO> {
     }
 
     /**
-     * @see GenericLogic#get(java.util.function.Supplier) see {@link AccountDAO#validateUser(java.lang.String, java.lang.String)
+     * @see GenericLogic#get(java.util.function.Supplier) see {@link AccountDAO#findByUserName(java.lang.String)
      * }
      * @param userName - search for this userName in the table
-     * @param password - search for this password in the table
-     * @return one {@link Account} with the selected userName and password
+     * @param password - match given password with password retrieved from db
+     * @return boolean - if this account exists in db
      */
-    public Account getAcountWith(String userName, String password) {
+    public boolean getAcountWith(String userName, String password) {
         Objects.requireNonNull(userName, AccountLogic.class.getName() + " userName " + ConstantStrings.NULL_OBJECT_ERROR);
         Objects.requireNonNull(password, AccountLogic.class.getName() + " password " + ConstantStrings.NULL_OBJECT_ERROR);
-        return get(() -> dao().validateUser(userName, password));
+        
+        Optional<Account> userNameAccount = Optional.ofNullable(get(() -> dao().findByUserName(userName)));
+        if (userNameAccount.isPresent()) {
+            return BCrypt.checkpw(password, userNameAccount.get().getPassword());
+        }
+
+        return false;
     }
 
     /**
