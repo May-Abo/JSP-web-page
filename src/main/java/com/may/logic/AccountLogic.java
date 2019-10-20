@@ -122,18 +122,20 @@ public class AccountLogic extends GenericLogic<Account, AccountDAO> {
      * }
      * @param userName - search for this userName in the table
      * @param password - match given password with password retrieved from db
-     * @return boolean - if this account exists in db
+     * @return {@link Account} - if this account exists in db
      */
-    public boolean getAcountWith(String userName, String password) {
+    public Account getAcountWith(String userName, String password) {
         Objects.requireNonNull(userName, AccountLogic.class.getName() + " userName " + ConstantStrings.NULL_OBJECT_ERROR);
         Objects.requireNonNull(password, AccountLogic.class.getName() + " password " + ConstantStrings.NULL_OBJECT_ERROR);
         
+        
+        Account account;
         Optional<Account> userNameAccount = Optional.ofNullable(get(() -> dao().findByUserName(userName)));
         if (userNameAccount.isPresent()) {
-            return BCrypt.checkpw(password, userNameAccount.get().getPassword());
+            account = BCrypt.checkpw(password, userNameAccount.get().getPassword()) ? userNameAccount.get() : null;
         }
 
-        return false;
+        return account;
     }
 
     /**

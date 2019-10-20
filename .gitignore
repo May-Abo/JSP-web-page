@@ -7,8 +7,8 @@
 *.ear
 *.zip
 *.tar.gz
-*/target/**
 .classpath
 .project
 .settings/
 *.class
+*/target/**

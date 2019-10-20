@@ -104,6 +104,16 @@ public class ConstantStrings {
     // Front-end strings
     public static final String LOGIN = "Login";
     public static final String SIGNUP = "SignUp";
+    public static final String LOGOUT = "LogOut";
+    public static final String DELETE = "Delete";
+    public static final String UPDATE = "Update";
+    public static final String CONFIRM = "Confirm";
+    public static final String DISCARD = "Discard";
+    
+    
+    public static final String DELETE_ACCOUNT = "Delete Account";
+    public static final String UPDATE_ACCOUNT = "Update Account";
+    public static final String RESET_PASSWORD = "Reset Passord";
     
     /**
      * password Restriction

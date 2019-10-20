@@ -5,6 +5,7 @@
  */
 package com.may.view;
 
+import com.may.entity.Account;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -76,4 +77,21 @@ public class AccountView extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    
+    private void logOut(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        request.getSession().setAttribute("userlogedID", null);
+        request.getSession().invalidate();
+        response.sendRedirect("index.jsp");
+    
+    }
+    
+    private void test(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        Integer currentUserID = (Integer) request.getSession().getAttribute("userloged");
+        response.sendRedirect("index.jsp");
+    
+    }
 }

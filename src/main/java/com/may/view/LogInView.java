@@ -5,16 +5,19 @@
  */
 package com.may.view;
 
+import com.may.entity.Account;
 import com.may.logic.AccountLogic;
 import com.may.util.ConstantStrings;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -41,13 +44,17 @@ public class LogInView extends HttpServlet {
 
         if (errorMessages.isEmpty()) {
             AccountLogic al = new AccountLogic();
-            boolean validLogin = al.getAcountWith(userName, password);
+            Account validAccount  = al.getAcountWith(userName, password);
+            boolean validLogin = (Optional.ofNullable(validAccount).isPresent());
             if (!validLogin) {
                 errorMessages.put(ConstantStrings.LOGIN, ConstantStrings.INVALID_LOGIN_ERROR);
+            } else {
+                request.getSession().setAttribute("userlogedID", validAccount.getId());
             }
         }
 
         if (errorMessages.isEmpty()) {
+            
             response.sendRedirect("account.jsp");
         } else {
             request.setAttribute("errorMessages", errorMessages);
