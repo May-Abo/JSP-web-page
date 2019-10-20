@@ -90,11 +90,11 @@
                             </div>
                             <div class="row ">
                                 <div class="col">
-                                    <a href="LogInView" class="btn btn-outline-dark  btn-block" role="button" aria-pressed="true"
+                                    <a href="LogInView" class="btn btn-outline-warning  btn-block" role="button" aria-pressed="true"
                                        title="Login" name="loginButton">Login</a>
                                 </div>
                                 <div class="col">
-                                    <button type="submit" class="btn btn-outline-dark  btn-block" name="${signUp}"
+                                    <button type="submit" class="btn btn-outline-warning  btn-block" name="${signUp}"
                                             id="${signUp}" title="Sign Up" >Sign Up</button>
                                 </div>
                             </div>

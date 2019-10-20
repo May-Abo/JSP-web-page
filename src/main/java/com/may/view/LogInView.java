@@ -17,7 +17,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -26,6 +25,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "LogInView", urlPatterns = {"/LogInView"})
 public class LogInView extends HttpServlet {
 
+    
     private void loginFormValidation(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -50,13 +50,12 @@ public class LogInView extends HttpServlet {
                 errorMessages.put(ConstantStrings.LOGIN, ConstantStrings.INVALID_LOGIN_ERROR);
             } else {
                 request.getSession().setAttribute("userlogedID", validAccount.getId());
+                request.setAttribute("userAccount", validAccount);
+                request.getRequestDispatcher("account.jsp").include(request, response);
             }
         }
 
-        if (errorMessages.isEmpty()) {
-            
-            response.sendRedirect("account.jsp");
-        } else {
+        if (!errorMessages.isEmpty()) {
             request.setAttribute("errorMessages", errorMessages);
             request.getRequestDispatcher("index.jsp").include(request, response);
         }

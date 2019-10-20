@@ -56,6 +56,19 @@ public class AccountLogic extends GenericLogic<Account, AccountDAO> {
     }
 
     /**
+     * get one row {@link Account} based on a given userName from Account table
+     *
+     * @see GenericLogic#get(java.util.function.Supplier) 
+     * see {@link AccountDAO#findByUserName(java.lang.String)}
+     * @param userName - string userName
+     * @return one {@link Account} with the selected userName
+     */
+
+    public Account getWithUserName(String userName) {
+        return get(() -> dao().findByUserName(userName));
+    }
+    
+    /**
      * create a new Account object and set the values using Class setters
      * 
      * @see GenericLogic#createEntity(java.util.Map)
@@ -128,14 +141,12 @@ public class AccountLogic extends GenericLogic<Account, AccountDAO> {
         Objects.requireNonNull(userName, AccountLogic.class.getName() + " userName " + ConstantStrings.NULL_OBJECT_ERROR);
         Objects.requireNonNull(password, AccountLogic.class.getName() + " password " + ConstantStrings.NULL_OBJECT_ERROR);
         
-        
-        Account account;
         Optional<Account> userNameAccount = Optional.ofNullable(get(() -> dao().findByUserName(userName)));
         if (userNameAccount.isPresent()) {
-            account = BCrypt.checkpw(password, userNameAccount.get().getPassword()) ? userNameAccount.get() : null;
+            return BCrypt.checkpw(password, userNameAccount.get().getPassword()) ? userNameAccount.get() : null;
         }
 
-        return account;
+        return null;
     }
 
     /**

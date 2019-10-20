@@ -12,3 +12,4 @@
 .settings/
 *.class
 */target/**
+/target/

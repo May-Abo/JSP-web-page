@@ -47,11 +47,11 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <button type="submit" class="btn btn-outline-dark  btn-block" name="${login}"
+                                    <button type="submit" class="btn btn-outline-warning  btn-block" name="${login}"
                                             id="${login}" title="Login" value="${login}">Login</button>
                                 </div>
                                 <div class="col">
-                                    <a href="SignUpView" class="btn btn-outline-dark  btn-block" role="button" aria-pressed="true"
+                                    <a href="SignUpView" class="btn btn-outline-warning  btn-block" role="button" aria-pressed="true"
                                        title="Sign Up" name="signUpButton">Sign Up</a>
                                 </div>
                             </div>
