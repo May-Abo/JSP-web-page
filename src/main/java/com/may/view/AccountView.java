@@ -10,7 +10,7 @@ import com.may.logic.AccountLogic;
 import java.io.IOException;
 import com.may.util.ConstantStrings;
 import java.io.PrintWriter;
-import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -75,8 +75,10 @@ public class AccountView extends HttpServlet {
             logOut(request, response);
         } else if (request.getParameter(ConstantStrings.DELETE) != null) {
             deleteAccount(request, response);
+        } else if (request.getParameter(ConstantStrings.RESET) != null) {
+            resetPassword(request, response);
         }
-        //processRequest(request, response);
+
     }
 
     /**
@@ -102,28 +104,64 @@ public class AccountView extends HttpServlet {
             throws ServletException, IOException {
 
         Integer currentUserID = (Integer) request.getSession(false).getAttribute("userlogedID");
-        String[] userNameRequesting = request.getParameterValues(ConstantStrings.DELETE);      
-        
+        String[] userNameRequesting = request.getParameterValues(ConstantStrings.DELETE);
+
         AccountLogic al = new AccountLogic();
         Optional<Account> userRequesting = Optional.ofNullable(al.getWithUserName(userNameRequesting[0]));
-         
-        if(userRequesting.isPresent()) {
-            if(Objects.equals(currentUserID, userRequesting.get().getId())) {
+
+        if (userRequesting.isPresent()) {
+            if (Objects.equals(currentUserID, userRequesting.get().getId())) {
                 al.delete(userRequesting.get());
             }
         }
         logOut(request, response);
     }
-    
+
     private void viewUserAccount(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Integer currentUserID = (Integer) request.getSession(false).getAttribute("userloged");
-        if(Optional.ofNullable(currentUserID).orElse(0) != 0) {
+        Integer currentUserID = (Integer) request.getSession(false).getAttribute("userlogedID");
+        if (Optional.ofNullable(currentUserID).orElse(0) != 0) {
             AccountLogic al = new AccountLogic();
             Optional<Account> userAccount = Optional.ofNullable(al.getWithId(currentUserID));
         } else {
             logOut(request, response);
         }
     }
+
+    private void resetPassword(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        Map<String, String> errorMessages = new HashMap<>();
+
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        parameterMap.forEach((k, v) -> {
+            if (v == null || v[0].isEmpty()) {
+                errorMessages.put(k, ConstantStrings.EMPTY_OBJECT_ERROR);
+            }
+        });
+
+        if (errorMessages.isEmpty()) {
+            String currentPassword = request.getParameter(ConstantStrings.CURRENT_PASS);
+            String newPassword = request.getParameter(ConstantStrings.NEW_PASS);
+
+            Integer currentUserID = (Integer) request.getSession(false).getAttribute("userlogedID");
+            String[] userNameRequesting = request.getParameterValues(ConstantStrings.RESET);
+
+            AccountLogic al = new AccountLogic();
+            Optional<Account> userRequesting = Optional.ofNullable(al.getWithUserName(userNameRequesting[0]));
+
+            if (userRequesting.isPresent()) {
+                if (al.comparePasswords(currentPassword, userRequesting.get().getPassword())) {
+                    userRequesting.get().setPassword(newPassword);
+                    Account updatedAccount = al.update(userRequesting.get());
+                } else {
+                    // update message
+                    errorMessages.put("", "");
+                }
+            }
+        }
+
+    }
+
 }

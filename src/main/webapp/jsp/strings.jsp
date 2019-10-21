@@ -18,6 +18,7 @@
     <c:set var="country" value="${ConstantStrings.COUNTRY}"/>
     <c:set var="signUp" value="${ConstantStrings.SIGNUP}"/>
     <c:set var="passMatchError" value="${ConstantStrings.PASSWORD_MATCH_ERROR}"/>
+    <c:set var="passMatch" value="${ConstantStrings.PASSWORD_MATCH}"/>
         
     <c:set var="userErrorMes" value="${ConstantStrings.USERNAME_TAKEN_ERROR}"/>
     <c:set var="userError" value="${ConstantStrings.USERNAME_ERROR}"/>
@@ -34,7 +35,10 @@
     <c:set var="delete" value="${ConstantStrings.DELETE}"/>
     <c:set var="update" value="${ConstantStrings.UPDATE}"/>
     <c:set var="confirm" value="${ConstantStrings.CONFIRM}"/>
-    <c:set var="Discard" value="${ConstantStrings.DISCARD}"/>
+    <c:set var="discard" value="${ConstantStrings.DISCARD}"/>
+    <c:set var="reset" value="${ConstantStrings.RESET}"/>
+    <c:set var="currPass" value="${ConstantStrings.CURRENT_PASS}"/>
+    <c:set var="newPass" value="${ConstantStrings.NEW_PASS}"/>
     
     <c:set var="deleteAcount" value="${ConstantStrings.DELETE_ACCOUNT}"/>
     <c:set var="updateAcount" value="${ConstantStrings.UPDATE_ACCOUNT}"/>

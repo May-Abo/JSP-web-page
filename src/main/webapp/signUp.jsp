@@ -86,7 +86,7 @@
                             <div class="form-group">
                                 <input type="password" class="form-control" id="repass" name="repass" placeholder="Re-Password">
                                 <span class="invalid-feedback">${passMatchError}</span>
-                                <span class="valid-feedback">test</span>
+                                <span class="valid-feedback">${passMatch}</span>
                             </div>
                             <div class="row ">
                                 <div class="col">

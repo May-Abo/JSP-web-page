@@ -111,6 +111,10 @@ public abstract class GenericDAO<T> {
         return em.<T>merge(entity);
     }
 
+    /**
+     * Remove the given entity from the persistence context, causing a managed entity to become detached
+     * @param entity - entity to be deleted
+     */
     public void detach(T entity) {
         em.detach(entity);
     }

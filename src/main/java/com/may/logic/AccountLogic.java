@@ -96,7 +96,7 @@ public class AccountLogic extends GenericLogic<Account, AccountDAO> {
         account.setEmail(parameterMap.get(ConstantStrings.EMAIL)[0]);
         account.setFirstName(parameterMap.get(ConstantStrings.FIRST_NAME)[0]);
         account.setLastName(parameterMap.get(ConstantStrings.LAST_NAME)[0]);
-        account.setPassword(bcryptHashing(parameterMap.get(ConstantStrings.PASSWORD)[0]));
+        account.setPassword(parameterMap.get(ConstantStrings.PASSWORD)[0]);
        
         if (parameterMap.containsKey(ConstantStrings.PHONE_NUMBER)) {
             account.setPhoneNumber(parameterMap.get(ConstantStrings.PHONE_NUMBER)[0]);
@@ -107,18 +107,6 @@ public class AccountLogic extends GenericLogic<Account, AccountDAO> {
         return account;
     }
 
-    /**
-     * 
-     * @see BCrypt#hashpw(java.lang.String, java.lang.String) 
-     * @param originalString - a string to be hased
-     * @return hashed string
-     */
-    private String bcryptHashing(String originalString){
-        //String generatedSecuredEmailHash = BCrypt.hashpw(originalString, BCrypt.gensalt(12))
-        //boolean matchedEmail = BCrypt.checkpw(originalString, generatedSecuredEmailHash);
-        return BCrypt.hashpw(originalString, BCrypt.gensalt(12));
-        
-    }
     /**
      * this method is not implemented
      *
@@ -147,6 +135,11 @@ public class AccountLogic extends GenericLogic<Account, AccountDAO> {
         }
 
         return null;
+    }
+    
+    public boolean comparePasswords(String newPassword, String oldPassword) {
+      
+        return BCrypt.checkpw(newPassword, oldPassword);
     }
 
     /**

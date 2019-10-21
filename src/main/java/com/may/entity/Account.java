@@ -24,6 +24,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 /**
  *
@@ -103,7 +104,7 @@ public class Account implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
+        this.password = bcryptHashing(password);
         this.status = status;
     }
 
@@ -152,7 +153,8 @@ public class Account implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        String hashedPassword = bcryptHashing(password);
+        this.password = hashedPassword;
     }
 
     public int getStatus() {
@@ -213,4 +215,15 @@ public class Account implements Serializable {
         return "com.may.entity.Account[ id=" + id + " ]";
     }
     
+    /**
+     * @see BCrypt#hashpw(java.lang.String, java.lang.String) 
+     * @param originalString - a string to be hased
+     * @return hashed string
+     */
+    private String bcryptHashing(String originalString){
+        //String generatedSecuredEmailHash = BCrypt.hashpw(originalString, BCrypt.gensalt(12))
+        //boolean matchedEmail = BCrypt.checkpw(originalString, generatedSecuredEmailHash);
+        return BCrypt.hashpw(originalString, BCrypt.gensalt(12));
+        
+    }
 }

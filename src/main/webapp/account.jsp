@@ -7,6 +7,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ include file="jsp/strings.jsp" %>
+<%@ include file="jsp/validateUserInput.jsp" %>
 
 <html>
     <head>
@@ -76,8 +77,9 @@
                                             id="${update}" title="${updateAcount}" value="${update}">${updateAcount}</button>
                                 </div>
                                 <div class="col">
-                                    <button type="submit" class="btn btn-outline-warning  btn-block" name="${confirm}"
-                                            id="${confirm}" title="${resetPassword}" value="${confirm}">${resetPassword}</button>
+                                    <button type="button" class="btn btn-outline-warning  btn-block" name="${confirm}"
+                                            id="${confirm}" title="${resetPassword}" value="${confirm}"
+                                            data-toggle="modal" data-target="#resetAccountPass">${resetPassword}</button>
                                 </div>
                             </div>
                             <div class="dropdown-divider"></div>
@@ -104,15 +106,12 @@
                 <div class="modal-content border-warning">
                     <div class="modal-header">
                         <h5 class="modal-title" id="confrimDeleteModal">Confirm</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
-                        </button>
                     </div>
                     <div class="modal-body">
                         Are you sure?
                     </div>
                     <div class="modal-footer">
-                        <form action="AccountView" name="AccountDeleteForm" method="post" id="AccountDeleteForm">
+                        <form action="AccountView" name="accountDeleteForm" method="post" id="accountDeleteForm">
                             <div class="row">
                                 <div class="col">
                                     <button type="submit" name="${delete}" value="${userAccount.getUserName()}" class="btn btn-outline-danger btn-block">Yes</button>
@@ -126,5 +125,56 @@
                 </div>
             </div>
         </div> 
+
+
+
+
+
+        <div class="modal fade" id="resetAccountPass" tabindex="-1" role="dialog" aria-labelledby="resetAccountPass" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content border-warning">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="resetAccountPass">Confirm</h5>
+                    </div>
+                    <form action="AccountView" name="restPasswordForm" method="post" id="restPasswordForm" onsubmit="return validateResetPassword()">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="${currPass}" name="${currPass}" placeholder="Current Password">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="${newPass}" 
+                                       name="${newPass}" placeholder="New Password" data-toggle="popover">
+                                <span class="invalid-feedback">${emptyFiledError}</span>
+                                <div id="popover-content" style="display: none">
+                                    <ul class="list-group custom-popover ">
+                                        <li class="list-group-item text-danger">${oneNum}</li>
+                                        <li class="list-group-item text-danger">${oneLow}</li>
+                                        <li class="list-group-item text-danger">${oneUp}</li>
+                                        <li class="list-group-item text-danger">${oneSpecial}</li>
+                                        <li class="list-group-item text-danger">${minChar}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="repass" name="repass" placeholder="Re-Password">
+                                <span class="invalid-feedback">${passMatchError}</span>
+                                <span class="valid-feedback">${passMatch}</span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" name="${reset}" value="${userAccount.getUserName()}" class="btn btn-outline-danger btn-block">${resetPassword}</button>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-outline-warning btn-block" data-dismiss="modal">Cancel</button>
+                                </div>    
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>                        
     </body>
 </html>

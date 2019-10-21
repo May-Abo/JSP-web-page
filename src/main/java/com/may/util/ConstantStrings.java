@@ -85,6 +85,7 @@ public class ConstantStrings {
     * Error password and repassword are not the same
     */
     public static final String PASSWORD_MATCH_ERROR = "The passwords do not match!";
+    public static final String PASSWORD_MATCH = "The passwords do not match!";
     /**
     * Null pointer exception Message
     */
@@ -109,8 +110,10 @@ public class ConstantStrings {
     public static final String UPDATE = "Update";
     public static final String CONFIRM = "Confirm";
     public static final String DISCARD = "Discard";
-    
-    
+    public static final String RESET = "Reset";
+    public static final String CURRENT_PASS = "currentPassword";
+    public static final String NEW_PASS = "newPassword";
+      
     public static final String DELETE_ACCOUNT = "Delete Account";
     public static final String UPDATE_ACCOUNT = "Update Account";
     public static final String RESET_PASSWORD = "Reset Passord";
